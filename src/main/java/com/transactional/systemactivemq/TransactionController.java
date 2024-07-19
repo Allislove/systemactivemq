@@ -26,20 +26,13 @@ public class TransactionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Transaction addTransaction(@RequestBody Transaction transaction) {
-        transactionService.sendTransactionMessage(transaction);
-       // return transactionService.addTransaction(transaction);
-        return transaction;
+        return transactionService.sendTransactionMessage(transaction);
     }
 
     @GetMapping("/daily-totals")
     public ResponseEntity<List<DailyTransactionTotal>> getDailyTransactionTotals() {
         List<DailyTransactionTotal> totals = transactionService.getDailyTransactionTotals();
         return ResponseEntity.ok(totals);
-    }
-
-    @PostMapping("/calculate-daily-totals")
-    public void calculateDailyTotals() {
-        transactionService.calculateAndSaveDailyTotals();
     }
 }
 

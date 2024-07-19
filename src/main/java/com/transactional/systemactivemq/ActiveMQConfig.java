@@ -14,9 +14,9 @@ public class ActiveMQConfig {
     @Bean
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
-        factory.setBrokerURL("tcp://b-6898b624-eaa7-4a0d-a3a1-c91318a1238d-1.mq.us-east-2.amazonaws.com:61616");
-        factory.setUserName("iamother");
-        factory.setPassword("gg5ACa46VNuMMAfqY2KkTf");
+        factory.setBrokerURL("tcp://localhost:61616");
+        factory.setUserName("admin");
+        factory.setPassword("admin");
         return factory;
     }
 

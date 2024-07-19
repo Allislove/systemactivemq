@@ -4,6 +4,9 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -13,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @RestController
-public class Transaction {
+public class Transaction implements Serializable {
 
     @Getter
     @Setter
@@ -24,5 +27,7 @@ public class Transaction {
     private String userId;
     private String geoPosition;
     private BigDecimal amount;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 }

@@ -1,11 +1,8 @@
 package com.transactional.systemactivemq;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -14,25 +11,31 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
     @Autowired
     private TransactionRepositoryCustom transactionRepositoryCustom;
 
-    @Autowired private JmsTemplate jmsTemplate;
+    @Autowired
+    private DailyTransactionTotalRepository dailyTransactionTotalRepository;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
 
-    // Metodo para crear las transacciones
-    @PostMapping
-    public Transaction addTransaction(@RequestBody Transaction transaction) {
-        return transactionRepository.save(transaction);
+    public Transaction sendTransactionMessage(Transaction transaction) {
+        // Primero guardamos la transacción en MongoDB
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        // Enviamos la transacción al broker
+        jmsTemplate.convertAndSend("transactionQueue", savedTransaction);
+        return savedTransaction;
     }
 
-    public List<DailyTransactionTotal> getDailyTransactionTotals() { return transactionRepository.findDailyTransactionTotals(); }
-
-    @Autowired
-    private DailyTransactionTotalRepository dailyTransactionTotalRepository;
+    public List<DailyTransactionTotal> getDailyTransactionTotals() {
+        return transactionRepositoryCustom.findDailyTransactionTotals();
+    }
 
     public void calculateAndSaveDailyTotals() {
         List<DailyTransactionTotal> dailyTotals = transactionRepositoryCustom.findDailyTransactionTotals();
@@ -41,13 +44,7 @@ public class TransactionService {
                     .ifPresentOrElse(existingTotal -> {
                         existingTotal.setTotalAmount(existingTotal.getTotalAmount().add(total.getTotalAmount()));
                         dailyTransactionTotalRepository.save(existingTotal);
-                    }, () -> {
-                        dailyTransactionTotalRepository.save(total);
-                    });
+                    }, () -> dailyTransactionTotalRepository.save(total));
         }
-    }
-
-    public void sendTransactionMessage(Transaction transaction) {
-        jmsTemplate.convertAndSend("transactionQueue", transaction);
     }
 }
