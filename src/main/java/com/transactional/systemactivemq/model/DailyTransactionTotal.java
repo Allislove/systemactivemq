@@ -1,4 +1,4 @@
-package com.transactional.systemactivemq;
+package com.transactional.systemactivemq.model;
 
 import lombok.*;
 

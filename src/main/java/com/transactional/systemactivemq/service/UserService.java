@@ -1,5 +1,7 @@
-package com.transactional.systemactivemq;
+package com.transactional.systemactivemq.service;
 
+import com.transactional.systemactivemq.repository.UserRepository;
+import com.transactional.systemactivemq.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;

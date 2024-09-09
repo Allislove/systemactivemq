@@ -1,4 +1,4 @@
-package com.transactional.systemactivemq;
+package com.transactional.systemactivemq.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class User {
 
     @Setter

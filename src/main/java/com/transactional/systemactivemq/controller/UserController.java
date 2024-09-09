@@ -1,5 +1,7 @@
-package com.transactional.systemactivemq;
+package com.transactional.systemactivemq.controller;
 
+import com.transactional.systemactivemq.model.User;
+import com.transactional.systemactivemq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
